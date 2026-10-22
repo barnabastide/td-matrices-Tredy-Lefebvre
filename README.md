@@ -1,5 +1,5 @@
 # TD - Stockage de matrices en C
-Auteurs : Wanzire Tredy (nom_github), Lefebvre Alexandre (barnabastide) - TD2
+Auteurs : Wanzire Tredy (Tredy-5), Lefebvre Alexandre (barnabastide) - TD2
 
 
 ## Introduction
