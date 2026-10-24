@@ -36,5 +36,5 @@ int mat_est_valide(const Matrice *m)
     return m!=NULL
     && m->coef !=NULL 
     && m->nb_lignes >= 1 && m->nb_lignes <= MAT_DIM_MAX #si dépassement de lignes
-    && m->nb_colonnes >= 1 && m->nb_colonnes <= MAT_DIM_MAX; si dépassement de colonnes
+    && m->nb_colonnes >= 1 && m->nb_colonnes <= MAT_DIM_MAX; 
 }
