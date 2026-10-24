@@ -15,7 +15,7 @@
 #include "matrice_alloc.h"
 
 static int nb_ok = 0, nb_total = 0;
-int mat_test_allocs_autorisees; //définie la constante pour après
+int mat_test_allocs_autorisees;
 
 /* Affiche [OK] ou [ECHEC] suivi de la description du test. */
 static void verifier(int condition, const char *description)
