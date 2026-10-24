@@ -421,13 +421,92 @@ Avec la commande: valgrind --leak-check=full ./demo_matrices
 ==77791== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 
 ```
+### Vérification 1er scénario (Addition de A et B)
+```
+    ./demo_matrices add donnees/A.txt donnees/B.txt R.txt
+```
+La sortie echo $? : 0
+
+Le test de fuite mémoire : valgrind --leak-check=full ./demo_matrices add donnees/A.txt donnees/B.txt R.txt
+```
+==6609== Memcheck, a memory error detector
+==6609== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==6609== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==6609== Command: ./demo_matrices add donnees/A.txt donnees/B.txt R.txt
+==6609== 
+A (4 x 3) :
+      25      48      84
+      15      33      11
+      45      88      10
+       0      12      -5
+B (4 x 3) :
+       1       2       3
+       4       5       6
+       7       8       9
+      10      11      12
+R = A + B (4 x 3) :
+      26      50      87
+      19      38      17
+      52      96      19
+      10      23       7
+Résultat enregistré dans "R.txt".
+==6609== 
+==6609== HEAP SUMMARY:
+==6609==     in use at exit: 0 bytes in 0 blocks
+==6609==   total heap usage: 22 allocs, 22 frees, 14,968 bytes allocated
+==6609== 
+==6609== All heap blocks were freed -- no leaks are possible
+==6609== 
+==6609== For lists of detected and suppressed errors, rerun with: -s
+==6609== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+```
+
+### Vérification 2ème scénario (Multiplication de A et C)
+```
+    ./demo_matrices mul donnees/A.txt donnees/C.txt R.txt
+```
+La sortie echo $? : 0
+
+Le test de fuite mémoire : valgrind --leak-check=full ./demo_matrices mul donnees/A.txt donnees/C.txt R.txt
+```
+==6607== Memcheck, a memory error detector
+==6607== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==6607== Using Valgrind-3.19.0 and LibVEX; rerun with -h for copyright info
+==6607== Command: ./demo_matrices mul donnees/A.txt donnees/C.txt R.txt
+==6607== 
+A (4 x 3) :
+      25      48      84
+      15      33      11
+      45      88      10
+       0      12      -5
+B (3 x 2) :
+       1       0
+       0       1
+       2      -1
+R = A x B (4 x 2) :
+     193     -36
+      37      22
+      65      78
+     -10      17
+Résultat enregistré dans "R.txt".
+==6607== 
+==6607== HEAP SUMMARY:
+==6607==     in use at exit: 0 bytes in 0 blocks
+==6607==   total heap usage: 21 allocs, 21 frees, 14,920 bytes allocated
+==6607== 
+==6607== All heap blocks were freed -- no leaks are possible
+==6607== 
+==6607== For lists of detected and suppressed errors, rerun with: -s
+==6607== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+```
+
 ### Vérification de la mémoire pour le scénario d'erreur
 En remplacent A.txt par invalide.txt :
 ```./demo_matrices add donnees/invalide.txt donnees/B.txt R.txt
 ```
-la sortie echo $? : 1
+La sortie echo $? : 1
 
-le test de fuite mémoire: valgrind --leak-check=full ./demo_matrices add donnees/invalide.txt donnees/B.txt R.txt
+Le test de fuite mémoire: valgrind --leak-check=full ./demo_matrices add donnees/invalide.txt donnees/B.txt R.txt
 ```
 ==85137== Memcheck, a memory error detector
 ==85137== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
@@ -454,4 +533,5 @@ Nous nous sommes répartis le travail de la manière suivante :
   - Wanzire Tredy : Réponse aux questions de réflexion, rédaction du compte-rendu et vérification des fuites mémoire
 
 Lefebvre Alexandre a utilisé Internet afin de comprendre ce qu'était le principe "Tolérant en lecture, strict en écriture".
+Il s'est également aide d'Internet afin de créer un Makefile qui lui soit utile.
     
