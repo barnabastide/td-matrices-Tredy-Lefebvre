@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
      *         - afficher "Résultat enregistré dans \"...\"." ;
      *         - statut = EXIT_SUCCESS;                                 */
     printf("Résultat enregistré dans \"%s\".\n", argv[4]);
-    goto nettoyage;
+    goto nettoyage; //permet la libération de la mémoire si tout fonctionne
     return EXIT_SUCCESS;
 
 nettoyage:
