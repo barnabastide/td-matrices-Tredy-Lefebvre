@@ -24,7 +24,139 @@ Au cours de ce TD, nous avons pu en apprendre davantage sur les règles à suivr
   - Une fonction qui échoue au milieu du code doit libérer tout ce qu'elle a alloué plus tôt.
     
 ## Réalisation
+### Exercice 1
+
+*Code de l'exercice 1 à fournir*
+
+Q3.1 : Si l’on avait pris en paramètre une Matrice m dans la fonction matrice_detruire, alors seule la copie, crée par la fonction, et ce vers quoi elle pointe aurait été libérée, et non pas la « vraie » matrice. On utilise alors Matrice *m pour avoir accès à la « vraie » matrice et ainsi la modifier.
+
+Q3.2 : Pour une matrice de taille nxp, dans notre code, on commence d’abord par allouer à l’entier coef un tableau de n lignes. Ensuite, on alloue dans chaque case un tableau d’entiers, de taille p au total. Ainsi, le nombre total d’appels à calloc pour une matrice nxp est égale à 1+n= n+1.
+Pour libérer entièrement la mémoire, il faut faire l’étape d’initialisation dans le sens inverse, et commencer par free ce qui se trouve dans les n cases du tableau (dans notre cas, un pointeur vers un tableau d’entiers). Après cela, on peut libérer le tableau dans son entièreté, ce qui nous donne un nombre total d’appels à free égale à n+1.
+Si la k-ieme itération échoue, alors les (k-1)-ièmes premières itérations ont fonctionné. On commence alors par libérer ces k-1 premières cases du tableau, avant de libérer le tableau dans son entièreté, d’où un total de k libérations. 
+
+Q3.3 : Appeler deux fois matrice_detruire sur la même matrice est sans danger car on regarde en premier si cette matrice est nulle ou non, avant de libérer la mémoire. 
+Si on fait une copie d’une matrice et que l’on libère les deux avec free, alors on doit s’attendre à ce que le compilateur renvoie une erreur. En effet, on libère deux fois la même zone mémoire, d’où l’erreur.
+
+Q3.4 : On commence par mettre *res à MATRICE_VIDE pour faire face au cas où la fonction échoue. De cette façon, la personne qui a appelé la fonction n’a pas à libérer de mémoire.
+
+Sortie de l'exercice 1 :
+```=== Exercice 1 : matrice.c ===
+[OK]    (1.a) message pour MAT_ERR_DIMENSIONS
+[OK]    (1.a) message pour MAT_ERR_DEPASSEMENT
+[OK]    (1.b) une matrice 1 x 2 est valide
+[OK]    (1.b) NULL n'est pas valide
+[OK]    (1.b) MATRICE_VIDE n'est pas valide
+[OK]    (1.b) une matrice de 0 ligne n'est pas valide
+=== Exercice 1 : matrice_alloc.c ===
+[OK]    (1.c) mat_allouer refuse 0 ligne
+[OK]    (1.c) mat_allouer refuse -2 colonnes
+[OK]    (1.c) mat_allouer refuse une dimension > MAT_DIM_MAX
+[OK]    (1.e) mat_allouer(&m, 3, 4) renvoie MAT_OK
+[OK]    (1.e) m a 3 lignes et 4 colonnes
+[OK]    (1.d) tous les coefficients valent 0
+[OK]    (1.f) apres mat_detruire, m est vide
+[OK]    (1.f) un second mat_detruire est sans danger
+[OK]    (1.f) mat_detruire(NULL) ne plante pas
+=== Exercice 1 : echecs d'allocation simules ===
+[OK]    (1.d) chaque echec renvoie MAT_ERR_ALLOCATION et laisse *res vide
+
+Bilan : 16 / 16 verifications reussies.
+```
+
+### Exercice 2
+
+*Code de l'exercice 2 à fournir*
+
+Q4.1 : Si on remplit directement *res dans la fonction mat_lire, l'utilisateur peut obtenir un résultat à moitié fini, si une erreur arrive pendant la fonction. Ainsi, on remplit une matrice locale pour éviter ce souci, étant donné qu’on ne l’affecte à *res que si elle est complète.
+
+Q4.2 : La fonction mat_lire ne vérifie pas que chaque ligne de la matrice est sur sa ligne de texte, mais la fonction d’écriture vérifie cela. Ce n’est pas gênant puisque cela est justifié par le principe « tolérant en lecture, strict en écriture ». Ce principe indique que notre programme doit savoir faire face à de petits défauts quand il reçoit des données, mais se doit de respecter à la lettre les règles établis. C’est donc ce principe qui est mis en place.
+
+Q4.3 : Comme le flux est positionné au niveau du dernier coefficient lors de l’appel à mat_lire, on peut faire en sorte de stocker plusieurs matrices en faisant d’abord un retour à la ligne pour positionner le flux à la ligne du dessous, avant de refaire un appel à mat_lire pour lire cette deuxième matrice.
+
+Q4.4 : La fonction mat_ecrire fait appel à fflush afin de synchroniser le tampon apportant des modifications et le fichier texte où l’on souhaite écrire, car certaines modifications dans le tampon peuvent ne pas être appliqués au fichier. Cependant, cela n’empêche pas l’appelant d’utiliser fclose après utilisation car fflush ne ferme pas le flux ouvert au début par fopen.
+
+Sortie de l'exercice 2 :
+```=== Exercice 2 : affichage (verification visuelle) ===
+M (4 x 3) :
+       1       2       3
+       4       5       6
+       7       8       9
+      10      11      12
+(2.a) Vous devez voir ci-dessus 4 lignes : 1 2 3 / 4 5 6 / 7 8 9 / 10 11 12
+=== Exercice 2 : ecriture ===
+[OK]    ouverture de test_ex2_sortie.txt en ecriture
+[OK]    (2.b) mat_ecrire renvoie MAT_OK
+[OK]    (2.b) le fichier contient exactement le format attendu
+[OK]    (2.b) mat_ecrire refuse une matrice vide
+=== Exercice 2 : relecture ===
+[OK]    (2.f) mat_lire relit le fichier : MAT_OK
+[OK]    (2.e) la matrice relue est identique
+[OK]    (2.e) espaces et sauts de ligne en trop sont toleres
+=== Exercice 2 : fichiers incorrects ===
+[OK]    (2.c) fichier vide
+[OK]    (2.c) dimension nulle
+[OK]    (2.c) dimension negative
+[OK]    (2.e) coefficient manquant
+[OK]    (2.e) donnee non numerique
+[OK]    (2.e) entier trop grand pour un int
+=== Exercice 2 : echec d'allocation simule ===
+[OK]    (2.d) mat_lire renvoie MAT_ERR_ALLOCATION proprement
+
+Bilan : 14 / 14 verifications reussies.
+```
+
+### Exercice 3
+
+*Code de l'exercice 3 à fournir*
+
+Q5.1 : L’attribut const permet d’empêcher toute modification d’une variable. Dans notre cas, const Matrice *a protège la valeur pointée par a, donc une Matrice, mais le pointeur a la possibilité de pointer ailleurs, et donc n’empêche pas a->coef[0][0] = 7. Afin de l’empêcher, il faut écrire const Matrice const *a, ce qui va empêcher le pointeur et l’adresse de pouvoir être modifiés.
+
+Q5.2 : Si l’on acceptait A <- A+B, on perdrait la matrice A de départ, qui serait alors remplacée par le résultat de l’addition dans le fichier texte.
+
+Q5.3 : La multiplication d’une matrice nxp avec une matrice pxq renvoie une matrice nxq, donc composée de de nxq coefficients. Pour calculer le coefficient placé à la ième ligne et la jème colonne , on a besoin de multiplier la ligne i de la première matrice, composée de p coefficients, avec la colonne j de la deuxième matrice, composée elle aussi de p coefficients. Ainsi, le calcul d’un seul coefficient demande p multiplications. La matrice renvoyée étant de taille nxq, le nombre de multiplications effectuées par mat_multiplier est égale à nxpxq.
+Pour deux matrices de taille 1000x1000, il y aura alors 1000x1000x1000 = 10 puissance 9 multiplications.
+
+Q5.4 : Ce test permet de détecter un dépassement positif, une valeur plus grande que INT_MAX. Cependant, cela ne détecte pas si s est inférieure ou non à INT_MIN, ce qui fausserait le résultat si c’était le cas. 
+
+Sortie de l'exercice 3 :
+```=== Exercice 3 : addition ===
+[OK]    (3.a) (2 x 3) + (3 x 2) : MAT_ERR_DIMENSIONS
+[OK]    (3.d) (2 x 3) + (2 x 3) : MAT_OK
+[OK]    (3.c) a + b est correct
+[OK]    a et b n'ont pas ete modifiees
+[OK]    (3.b) le resultat possede sa propre memoire
+[OK]    (3.c) INT_MAX + 1 : MAT_ERR_DEPASSEMENT
+=== Exercice 3 : multiplication ===
+[OK]    (3.e) (2 x 3) x (2 x 3) : MAT_ERR_DIMENSIONS
+[OK]    (3.h) (2 x 3) x (3 x 2) : MAT_OK
+[OK]    (3.g) a x c = (58 64 / 139 154)
+[OK]    (3.f) (3 x 2) x (2 x 3) donne une matrice 3 x 3
+[OK]    a et c n'ont pas ete modifiees
+[OK]    (3.g) 2 x 10^10 depasse INT_MAX : MAT_ERR_DEPASSEMENT
+=== Exercice 3 : cas particuliers ===
+[OK]    resultat = entree refuse, a reste intacte
+[OK]    (3.f) echec d'allocation : MAT_ERR_ALLOCATION, r vide
+
+Bilan : 14 / 14 verifications reussies.
+```
+
+### Exercice 4
+
+*Code de l'exercice 4 à fournir*
+
+Q6.1 : Le fichier main.c est le cerveau de notre ensemble de fichiers, son rôle est d’appeler les autres fichiers et de faire le lien entre ces fichiers et l’utilisateur qui les utilisent. Ainsi, ce n’est pas à la fonction mat_lire de renvoyer un message d’erreur car elle ne s’occupe pas de la passerelle code-utilisateur. C’est le fichier main.c qui s’en occupe et qui décide de l’affichage de cette erreur.
+
+Q6.2 : On applique à nouveau le principe de tolérance en lecture et d’intransigeance en écriture. La fonction charger ne fait que lire la matrice dans un fichier, tandis que la fonction sauvegarder écrit une matrice dans un fichier.
+
+Q6.3 : Le calcul ayant réussi, on a donc alloué de la mémoire pour trois matrices, à savoir celles que l’on additionne ou multiplie, et la matrice contenant le résultat. Cette libération se fait à l’aide de nettoyage, à la fin du main.
+
 ## Vérifications mémoire
 ## Démonstration finale
 ## Bilans et difficultés
+Nous n'avons pas eu beaucoup de difficultés lors de la réalisation de ce TD. En revanche, nous avons pu nous rendre compte de la rigueur à adopter afin de gérer convenablement la mémoire dynamique.
+Nous nous sommes répartis le travail de la manière suivante : 
+  - Lefebvre Alexandre : Écriture du code, exécution des tests sur les 4 modules et réponse aux questions de réflexion
+  - Wanzire Tredy : Réponse aux questions de réflexion et rédaction du compte-rendu
 
+Lefebvre Alexandre a utilisé Internet afin de comprendre ce qu'était le principe "Tolérant en lecture, strict en écriture".
+    
