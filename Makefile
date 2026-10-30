@@ -27,13 +27,9 @@ OBJS = $(SRCS:.c=.o)
 # Règle par défaut (exécutée en tapant simplement 'make')
 all: $(TARGET)
 
-# Édition des liens : Crée l'exécutable final à partir des fichiers objets
-$(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
-
-# Compilation : Transforme chaque fichier .c en fichier .o
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+# Compilation DIRECTE : Crée l'exécutable directement depuis les fichiers .c
+$(TARGET): $(SRCS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(SRCS)
 
 # ==============================================================================
 # RÈGLES UTILITAIRES
