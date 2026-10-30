@@ -447,6 +447,7 @@ Erreur : lecture de "donnees/invalide.txt" : fichier mal formé
 ==85137== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 
 ```
+
 ## Bilans et difficultés
 Nous n'avons pas eu beaucoup de difficultés lors de la réalisation de ce TD. En revanche, nous avons pu nous rendre compte de la rigueur à adopter afin de gérer convenablement la mémoire dynamique.
 Nous nous sommes répartis le travail de la manière suivante : 
