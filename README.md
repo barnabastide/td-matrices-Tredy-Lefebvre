@@ -364,10 +364,10 @@ Q6.2 : On applique à nouveau le principe de tolérance en lecture et d’intra
 Q6.3 : Le calcul ayant réussi, on a donc alloué de la mémoire pour trois matrices, à savoir celles que l’on additionne ou multiplie, et la matrice contenant le résultat. Cette libération se fait à l’aide de nettoyage, à la fin du main.
 
 ## Vérifications mémoire
-gârce à valgrind on peut savoir si il y a une fuite de mémoire.
+Grâce à valgrind, on peut savoir s'il y a des fuites de mémoire dues à notre implémentation.
 Nous ne prendrons que les parties les plus importantes. 
 
-Avec la commende: valgrind --leak-check=full ./test_ex1
+Avec la commande: valgrind --leak-check=full ./test_ex1
 ```
 ==77243== Memcheck, a memory error detector
 ==77243== HEAP SUMMARY:
@@ -381,8 +381,7 @@ Avec la commende: valgrind --leak-check=full ./test_ex1
 ```
 
 
-
-Avec la commende: valgrind --leak-check=full ./test_ex2
+Avec la commande: valgrind --leak-check=full ./test_ex2
 ```
 ==77413== Memcheck, a memory error detector
 ==77413== HEAP SUMMARY:
@@ -396,7 +395,7 @@ Avec la commende: valgrind --leak-check=full ./test_ex2
 ```
 
 
-Avec la commende: valgrind --leak-check=full ./test_ex3
+Avec la commande: valgrind --leak-check=full ./test_ex3
 ```
 ==77679== Memcheck, a memory error detector
 ==77679== HEAP SUMMARY:
@@ -409,7 +408,7 @@ Avec la commende: valgrind --leak-check=full ./test_ex3
 ==77679== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 ```
 
-Avec la commende: valgrind --leak-check=full ./demo_matrices
+Avec la commande: valgrind --leak-check=full ./demo_matrices
 ```
 ==77791== Memcheck, a memory error detector
 ==77791== HEAP SUMMARY:
@@ -422,7 +421,7 @@ Avec la commende: valgrind --leak-check=full ./demo_matrices
 ==77791== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
 
 ```
-#verfication de la mémoire pour le scénario d'erreur
+### Vérification de la mémoire pour le scénario d'erreur
 En remplacent A.txt par invalide.txt :
 ```./demo_matrices add donnees/invalide.txt donnees/B.txt R.txt
 ```
@@ -451,7 +450,7 @@ Erreur : lecture de "donnees/invalide.txt" : fichier mal formé
 ## Bilans et difficultés
 Nous n'avons pas eu beaucoup de difficultés lors de la réalisation de ce TD. En revanche, nous avons pu nous rendre compte de la rigueur à adopter afin de gérer convenablement la mémoire dynamique.
 Nous nous sommes répartis le travail de la manière suivante : 
-  - Lefebvre Alexandre : Écriture du code, exécution des tests sur les 4 modules et réponse aux questions de réflexion
+  - Lefebvre Alexandre : Écriture du code, exécution des tests sur les 4 modules, réponse aux questions de réflexion et rédaction du compte-rendu
   - Wanzire Tredy : Réponse aux questions de réflexion, rédaction du compte-rendu et vérification des fuites mémoire
 
 Lefebvre Alexandre a utilisé Internet afin de comprendre ce qu'était le principe "Tolérant en lecture, strict en écriture".
