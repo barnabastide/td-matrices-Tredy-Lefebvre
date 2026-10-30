@@ -364,12 +364,94 @@ Q6.2 : On applique à nouveau le principe de tolérance en lecture et d’intra
 Q6.3 : Le calcul ayant réussi, on a donc alloué de la mémoire pour trois matrices, à savoir celles que l’on additionne ou multiplie, et la matrice contenant le résultat. Cette libération se fait à l’aide de nettoyage, à la fin du main.
 
 ## Vérifications mémoire
-## Démonstration finale
+gârce à valgrind on peut savoir si il y a une fuite de mémoire.
+Nous ne prendrons que les parties les plus importantes. 
+
+Avec la commende: valgrind --leak-check=full ./test_ex1
+```
+==77243== Memcheck, a memory error detector
+==77243== HEAP SUMMARY:
+==77243==     in use at exit: 0 bytes in 0 blocks
+==77243==   total heap usage: 11 allocs, 11 frees, 1,228 bytes allocated
+==77243== 
+==77243== All heap blocks were freed -- no leaks are possible
+==77243== 
+==77243== For lists of detected and suppressed errors, rerun with: -s
+==77243== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+```
+
+
+
+Avec la commende: valgrind --leak-check=full ./test_ex2
+```
+==77413== Memcheck, a memory error detector
+==77413== HEAP SUMMARY:
+==77413==     in use at exit: 0 bytes in 0 blocks
+==77413==   total heap usage: 51 allocs, 51 frees, 60,728 bytes allocated
+==77413== 
+==77413== All heap blocks were freed -- no leaks are possible
+==77413== 
+==77413== For lists of detected and suppressed errors, rerun with: -s
+==77413== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+```
+
+
+Avec la commende: valgrind --leak-check=full ./test_ex3
+```
+==77679== Memcheck, a memory error detector
+==77679== HEAP SUMMARY:
+==77679==     in use at exit: 0 bytes in 0 blocks
+==77679==   total heap usage: 34 allocs, 34 frees, 1,372 bytes allocated
+==77679== 
+==77679== All heap blocks were freed -- no leaks are possible
+==77679== 
+==77679== For lists of detected and suppressed errors, rerun with: -s
+==77679== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+```
+
+Avec la commende: valgrind --leak-check=full ./demo_matrices
+```
+==77791== Memcheck, a memory error detector
+==77791== HEAP SUMMARY:
+==77791==     in use at exit: 0 bytes in 0 blocks
+==77791==   total heap usage: 0 allocs, 0 frees, 0 bytes allocated
+==77791== 
+==77791== All heap blocks were freed -- no leaks are possible
+==77791== 
+==77791== For lists of detected and suppressed errors, rerun with: -s
+==77791== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
+#verfication de la mémoire pour le scénario d'erreur
+En remplacent A.txt par invalide.txt :
+```./demo_matrices add donnees/invalide.txt donnees/B.txt R.txt
+```
+la sortie echo $? : 1
+
+le test de fuite mémoire: valgrind --leak-check=full ./demo_matrices add donnees/invalide.txt donnees/B.txt R.txt
+```
+==85137== Memcheck, a memory error detector
+==85137== Copyright (C) 2002-2024, and GNU GPL'd, by Julian Seward et al.
+==85137== Using Valgrind-3.26.0 and LibVEX; rerun with -h for copyright info
+==85137== Command: ./demo_matrices add donnees/invalide.txt donnees/B.txt R.txt
+==85137== 
+Erreur : lecture de "donnees/invalide.txt" : fichier mal formé
+==85137== 
+==85137== HEAP SUMMARY:
+==85137==     in use at exit: 0 bytes in 0 blocks
+==85137==   total heap usage: 5 allocs, 5 frees, 4,600 bytes allocated
+==85137== 
+==85137== All heap blocks were freed -- no leaks are possible
+==85137== 
+==85137== For lists of detected and suppressed errors, rerun with: -s
+==85137== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+
+```
 ## Bilans et difficultés
 Nous n'avons pas eu beaucoup de difficultés lors de la réalisation de ce TD. En revanche, nous avons pu nous rendre compte de la rigueur à adopter afin de gérer convenablement la mémoire dynamique.
 Nous nous sommes répartis le travail de la manière suivante : 
   - Lefebvre Alexandre : Écriture du code, exécution des tests sur les 4 modules et réponse aux questions de réflexion
-  - Wanzire Tredy : Réponse aux questions de réflexion et rédaction du compte-rendu
+  - Wanzire Tredy : Réponse aux questions de réflexion, rédaction du compte-rendu et vérification des fuites mémoire
 
 Lefebvre Alexandre a utilisé Internet afin de comprendre ce qu'était le principe "Tolérant en lecture, strict en écriture".
     
