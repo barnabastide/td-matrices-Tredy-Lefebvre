@@ -527,7 +527,7 @@ Erreur : lecture de "donnees/invalide.txt" : fichier mal formé
 ```
 
 ## Bilans et difficultés
-Nous n'avons pas eu beaucoup de difficultés lors de la réalisation de ce TD. En revanche, nous avons pu nous rendre compte de la rigueur à adopter afin de gérer convenablement la mémoire dynamique.
+Nous n'avons pas eu beaucoup de difficultés lors de la réalisation de ce TD, hormis l'implémentation du Makefile. En effet, nous avons une erreur lors de la compilation du fichier test_ex1.c dans le Makefile alors que celui-ci nous a été fourni et est resté inchangé depuis. Nous avons pu nous rendre compte de la rigueur à adopter afin de gérer convenablement la mémoire dynamique.
 Nous nous sommes répartis le travail de la manière suivante : 
   - Lefebvre Alexandre : Écriture du code, exécution des tests sur les 4 modules, réponse aux questions de réflexion et rédaction du compte-rendu
   - Wanzire Tredy : Réponse aux questions de réflexion, rédaction du compte-rendu et vérification des fuites mémoire
