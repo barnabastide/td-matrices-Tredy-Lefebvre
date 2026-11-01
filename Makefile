@@ -17,12 +17,6 @@ TARGET = demo_matrices
 # Détection automatique de tous les fichiers sources (.c) du dossier
 SRCS = $(wildcard *.c)
 
-ifeq ($(GITHUB_ACTIONS), true)
-    SRCS = $(filter-out test_ex1.c, $(ALL_SRCS))
-else
-    SRCS = $(ALL_SRCS)
-endif
-
 # ==============================================================================
 # RÈGLES DE COMPILATION
 # ==============================================================================
