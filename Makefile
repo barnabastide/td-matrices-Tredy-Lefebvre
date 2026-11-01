@@ -19,8 +19,6 @@ SRCS = $(wildcard *.c)
 
 ifeq ($(GITHUB_ACTIONS), true)
     SRCS = $(filter-out test_ex1.c, $(ALL_SRCS))
-    SRCS = $(filter-out test_ex2.c, $(ALL_SRCS))
-	SRCS = $(filter-out test_ex3.c, $(ALL_SRCS))
 else
     SRCS = $(ALL_SRCS)
 endif
